@@ -1,6 +1,8 @@
 # Linux and Windows System Monitoring using Grafana and Prometheus
 
-![Monitoring Banner](https://uptimerobot.com/blog/wp-content/uploads/2024/05/opensourcewebsitemonitoring.webp)
+<img align="left" src="https://uptimerobot.com/blog/wp-content/uploads/2024/05/opensourcewebsitemonitoring.webp" alt="Monitoring Banner" width="400"/>
+
+<br clear="left"/>
 
 This project demonstrates how to monitor both **Linux** and **Windows** systems using **Prometheus** and **Grafana**. It leverages the **Node Exporter** for Linux systems and the **Windows Exporter** for Windows machines to collect system metrics. These metrics are visualized in **Grafana** through custom dashboards, providing insights into the system's performance and health.
 
