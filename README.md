@@ -18,10 +18,10 @@ The following tools are used in these projects:
 
 
 <p align="center">
-  <img src="[./path-to-image1.jpg](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS057YplRYn3jI5Pe0EUpreqi6U4vK-8ZBAww&s)" alt="linux" width="150" style="margin-right: 10px;"/>
+  <img src="[https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS057YplRYn3jI5Pe0EUpreqi6U4vK-8ZBAww&s]()" alt="linux" width="150" style="margin-right: 10px;"/>
   <img src="https://www.stickerpress.in/media/products/800x800/156717876b01417c9b1f0936549a40f0.jpg" alt="jenkins" width="150" style="margin-right: 10px;"/>
-  <img src="[./path-to-image3.jpg](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnn9Uv81pEz7PHxPYNzD9NwKl31RGW2mpU9A&s)" alt="ansible" width="150" style="margin-right: 10px;"/>
-  <img src="[./path-to-image4.jpg](https://www.digitalcorner-wavestone.com//wp-content/uploads/2024/04/1675117297-products-og-img-terraform.png)" alt="terraform" width="150"/>
+  <img src="[[https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnn9Uv81pEz7PHxPYNzD9NwKl31RGW2mpU9A&s]()]()" alt="ansible" width="150" style="margin-right: 10px;"/>
+  <img src="[https://www.digitalcorner-wavestone.com//wp-content/uploads/2024/04/1675117297-products-og-img-terraform.png]()" alt="terraform" width="150"/>
 </p>
 
 
