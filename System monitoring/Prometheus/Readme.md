@@ -1,5 +1,4 @@
-
-![Alt text](https://en.wikipedia.org/wiki/Prometheus_%28software%29#/media/File:Prometheus_software_logo.svg)
+<img src="https://en.wikipedia.org/wiki/Prometheus_%28software%29#/media/File:Prometheus_software_logo.svg" width="300" />
 
 
 
@@ -8,5 +7,5 @@
 
 ### **To download and configure the prometheus use the following URL**
 
-              <a href="https://prometheus.io/download/" target="_blank">ReadMe</a>
+  <a href="https://prometheus.io/download/" target="_blank">ReadMe</a>
       
