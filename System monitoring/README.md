@@ -13,7 +13,7 @@ System monitoring is crucial to ensure the availability and performance of infra
 ## Tools Used
 
 ### 1. **Prometheus**
-   - A powerful open-source monitoring and alerting toolkit designed for reliability and scalability.
+   - A powerful open-source monitoring  toolkit designed for reliability and scalability.
    - Used to scrape metrics from the Node Exporter (for Linux) and Windows Exporter (for Windows) at regular intervals.
 
 ### 2. **Grafana**
