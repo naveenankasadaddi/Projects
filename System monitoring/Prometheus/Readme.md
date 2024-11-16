@@ -7,5 +7,5 @@
 
 ### **To download and configure the prometheus use the following URL**
 
-  <a href="https://prometheus.io/download/" target="_blank">ReadMe</a>
+  <a href="https://prometheus.io/download/" target="_blank">Download prometheus</a>
       
