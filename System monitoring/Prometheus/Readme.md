@@ -1,5 +1,4 @@
-<img src="https://en.wikipedia.org/wiki/Prometheus_%28software%29#/media/File:Prometheus_software_logo.svg" width="300" />
-
+<img align="right" alt="right" width="400" src="https://en.wikipedia.org/wiki/Prometheus_%28software%29#/media/File:Prometheus_software_logo.svg">
 
 
 
