@@ -23,8 +23,4 @@ scrape_configs:
     static_configs:
     - targets: [
     			<node_name>:<port>
-               ]
-    basic_auth:
-      username: <Username>
-      password: <Password>
-
+              ]
