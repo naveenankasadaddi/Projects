@@ -8,9 +8,7 @@ global:
 alerting:
   alertmanagers:
 
-  - static_configs:
-    - targets:
-      - localhost:9093
+
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
@@ -18,8 +16,8 @@ rule_files:
   - /tmp/monitoring_rules/modified_rules/windows_rules.yml
 
 
-scrape_configs:
-  
+#To monitor the local host we cann add like this.Here 9100 is the port on which node_exporter is running.Simlarly we cann add windows exporter tooo
+scrape_configs:  
   - job_name: 'localhost'
     static_configs:
     - targets: [
@@ -31,6 +29,8 @@ scrape_configs:
     - targets: [
                 'my-amazon-linux:9100'
                ]  
+
+               
   #With the help of black box exporter we can monitor ssl certificates too.
   - job_name: 'blackbox'
     metrics_path: /probe
