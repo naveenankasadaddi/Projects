@@ -35,3 +35,11 @@ Grafana supports a wide range of data sources, including:
    ```bash
    docker run -d -p 3000:3000 --name=grafana grafana/grafana
 
+```
+![image](https://github.com/user-attachments/assets/a1f4f065-b5ab-4049-8a1e-d4bbf7200f5a)
+
+Grafana have predefined system dashoboards.We can use them for our systm monitoring and we can modify them according to our needs.
+For Example:
+```
+https://grafana.com/grafana/dashboards/4220-linux-system-overview/
+
