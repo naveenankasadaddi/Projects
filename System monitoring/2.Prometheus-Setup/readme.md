@@ -21,4 +21,9 @@
 
 <br clear="left"/>
 
-  - A Sample of prometheus.yml can be seen in this directory.
+  - A Sample of prometheus.yml can be seen in this directory.Which contains information systems to monitor.
+# Download Prometheus
+
+  You can download the latest version of Prometheus from the official GitHub releases page:
+
+  [Prometheus GitHub Releases](https://github.com/prometheus/prometheus/releases)
