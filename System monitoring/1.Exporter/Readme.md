@@ -11,6 +11,8 @@
 
 <img align="left" src="https://miro.medium.com/v2/resize:fit:1200/1*3fz7PoCp6KzAlMPwqhtZVg.png" alt="Monitoring Banner" width="400"/>
 
+<br clear="left"/>
+
   - You can download Node Exporter from its official GitHub releases page:
 
     [Node Exporter GitHub Releases](https://github.com/prometheus/node_exporter/releases)
