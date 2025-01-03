@@ -1,4 +1,4 @@
-# Linux and Windows System Monitoring using  Prometheus,Alertmanager,node_exporter,windows exporter and Grafana
+# Linux and Windows System Monitoring using  node_exporter,windows exporter,Prometheus,Alertmanager and Grafana
 
 <img align="left" src="https://uptimerobot.com/blog/wp-content/uploads/2024/05/opensourcewebsitemonitoring.webp" alt="Monitoring Banner" width="400"/>
 
@@ -28,17 +28,22 @@ System monitoring is crucial to ensure the availability and performance of infra
 
 ## Monitoring Setup
 
-### 1. **Prometheus Configuration**
-   - Prometheus is configured to scrape both **Node Exporter** (Linux) and **Windows Exporter** (Windows) metrics.
-   - Modify the `prometheus.yml` file to include targets for both Linux and Windows servers.
-
-### 2. **Linux System Monitoring**
+### 1. **System Monitoring**
+#### A. **Linux System Monitoring**
    - Install **Node Exporter** on your Linux servers to expose system-level metrics.
    - Metrics are collected by Prometheus and can be visualized in Grafana.
 
-### 3. **Windows System Monitoring**
+#### B. **Windows System Monitoring**
    - Install **Windows Exporter** on your Windows servers to collect key system metrics.
    - Prometheus will scrape these metrics and display them in Grafana.
+
+### 2. **Prometheus Configuration**
+   - Prometheus is configured to scrape both **Node Exporter** (Linux) and **Windows Exporter** (Windows) metrics.
+   - Modify the `prometheus.yml` file to include targets for both Linux and Windows servers.
+
+### 3. **Alertmanager Configuration**
+   - Alert-manager is used to trigger an alert with the help of prometheus metrics.
+   - Alertmanager can send the alerts via Email,PagerDuty,Slack,Webhook,OpsGenie,VictorOps (Splunk On-Call),Pushover,AWS SNS,Custom Integrations.
 
 ### 4. **Grafana Dashboards**
    - Grafana is used to create and manage monitoring dashboards.
