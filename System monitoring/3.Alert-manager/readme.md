@@ -52,3 +52,10 @@ receivers:
     7.Pushover
     8.Custom Integrations via webhooks
 ```
+
+```
+# **The folowing is the alert triggered using the above configuration**
+
+
+![image](https://github.com/user-attachments/assets/a9de63fb-e26c-424b-b6ec-612ff0098ddd)
+
