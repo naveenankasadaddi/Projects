@@ -42,6 +42,7 @@ receivers:
 
 ## **Notification Methods**
   - Alertmanager supports the following notification methods:
+    ```
     1.Email
     2.Slack
     3.PagerDuty
@@ -50,3 +51,4 @@ receivers:
     6.VictorOps
     7.Pushover
     8.Custom Integrations via webhooks
+```
