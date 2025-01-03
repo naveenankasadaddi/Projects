@@ -49,3 +49,4 @@ System monitoring is crucial to ensure the availability and performance of infra
    - Grafana is used to create and manage monitoring dashboards.
    - Pre-built dashboards are available for both Linux and Windows system monitoring, or you can create custom dashboards based on the exposed metrics.
 
+   For specific operations open the files
