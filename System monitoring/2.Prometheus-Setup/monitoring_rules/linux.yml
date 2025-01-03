@@ -1,0 +1,99 @@
+groups:
+  - name: System_Rules
+    rules:
+      - record: node_memory_MemFree_percent
+        expr: 100 - (100 * node_memory_MemFree_bytes / node_memory_MemTotal_bytes)
+
+      - record: node_cpu_load
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[15m])) * 100)
+
+      - record: node_filesystem_free_percent_root
+        expr: 100 * node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}
+
+      - record: node_ram_free_percent
+        expr: 100 - (100 * (1 - ((avg_over_time(node_memory_MemFree_bytes{job=~".*"}[5m]) + avg_over_time(node_memory_Cached_bytes{job=~".*"}[5m]) + avg_over_time(node_memory_Buffers_bytes{job=~".*"}[5m])) / avg_over_time(node_memory_MemTotal_bytes{job=~".*"}[5m]))))
+
+
+  - name: System_Process_Rules
+    rules:
+#DiskSpaceFreePercent    
+       - alert: P2:DiskSpaceFreePercentOnRoot
+         expr: node_filesystem_free_percent_ebs{instance=~"localhost:9100"} <= 20 > 10
+         for: 2m
+         labels:
+           severity: Warning
+           # custom_alert_interval is the group to whcih this mail will send
+           custom_alert_interval: naveen
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 20% or less Free disk space at / "
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P1:DiskSpaceFreePercentOnRoot
+         expr: node_filesystem_free_percent_ebs{instance=~"localhost:9100"} <= 10
+         for: 2m
+         labels:
+           severity: Critical
+           custom_alert_interval: naveen
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Free disk space at /"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+           
+
+
+#HostHighCpuUsage
+       - alert: P1:HostHighCpuUsage
+         expr: node_cpu_load{instance=~"localhost:9100"} > 90
+         for: 10m
+         labels:
+           severity: Critical
+           custom_alert_interval: naveen
+         annotations:
+           summary: Host high CPU load (instance {{ $labels.instance }})
+           description: "CPU load is High\n  VALUE = {{ humanize $value }}\n  LABELS = {{ $labels.instance }}"
+           
+       - alert: P2:HostHighCpuUsage_On_Apps
+         expr: node_cpu_load{instance=~"localhost:9100"} > 90
+         for: 30m
+         labels:
+           severity: warning
+           custom_alert_interval: naveen
+         annotations:
+           summary: Host high CPU load (instance {{ $labels.instance }})
+           description: "CPU load is High\n  VALUE = {{ humanize $value }}\n  LABELS = {{ $labels.instance }}"           
+
+
+#HostOutOfMemory
+       - alert: P1:HostOutOfMemory
+         expr: node_ram_free_percent{instance=~"localhost:9100"} <= 5
+         for: 30m
+         labels:
+           severity: Critical
+           custom_alert_interval: naveen
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 5% or less Ram left "
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P2:HostOutOfMemory
+         expr: node_ram_free_percent{instance=~"localhost:9100"} <= 10
+         for: 30m
+         labels:
+           severity: Warning
+           custom_alert_interval: naveen
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Ram left "
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."           
+
+
+#HostHighLoad
+       - alert: P1:HostHighLoad
+         expr: node_load15{instance=~"localhost:9100"} > 2.0*((count without(cpu, mode) (node_cpu_seconds_total{mode="idle",instance=~"localhost:9100"})) > 2 )
+         for: 15m
+         labels:
+           severity: Critical
+           custom_alert_interval: naveen
+         annotations:
+           summary: Host high load on (instance {{ $labels.instance }})
+           description: "15 Minutes LoadAverage is High on {{ $labels.instance }} with Value: {{ humanize $value }}"
+           
+
+
