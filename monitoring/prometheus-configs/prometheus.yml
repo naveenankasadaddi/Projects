@@ -1,0 +1,662 @@
+global:
+  scrape_interval:     1m # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 1m # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+  query_log_file: /ebs/prometheus/query.log
+# Alertmanager configuration
+#password: $2y$18$Up7hxXAlLFEPDpSDu7sQBOn.4mCz1BExY8Ep6filsFyUWlJAyg8n6
+alerting:
+  alertmanagers:
+  #- path_prefix: "/alert-manager/"
+
+  - static_configs:
+    - targets:
+      - gbp-monitor-03.ec2-east1.glassbeam.com:9093
+        #- gbp-monitor-04.ec2-east1.glassbeam.com:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+
+  - /ebs/prometheus/monitoring_rules/modified_rules/canon_linux.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prod_linux.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/stage_linux.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/windows_rules.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/dev_linux.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prometheus_rules_canon_ml.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prometheus_rules_canon_nodedown.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prometheus_rules_gb4gb.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prometheus_rules_production.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prometheus_rules_production_nodedown.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prometheus_rules_stage.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prometheus_ssl_rules.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prod_dbs.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/dev_linux.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/temp_servers.yml   
+  - /ebs/prometheus/monitoring_rules/modified_rules/prometheus_rules_ml.yml
+  - /ebs/prometheus/monitoring_rules/modified_rules/prometheus_rules_vartmp.yml 
+
+scrape_configs:
+  - job_name: 'prometheus'
+
+    static_configs:
+    - targets: ['gbp-monitor-03.ec2-east1.glassbeam.com:9090', 'gbp-monitor-03.ec2-east1.glassbeam.com:9100'
+               ]
+    basic_auth:
+      username: gbprod
+      password: gla$$beam
+
+
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  #
+  #
+  #
+  #  - job_name: 'ProdSolrJMXMetrics'
+  #    metrics_path: /solr/admin/metrics
+  #    static_configs:
+  #  - targets: [
+  #             'gbp-solr-01.ec2-east1.glassbeam.com:8983','gbp-solr-02.ec2-east1.glassbeam.com:8983','gbp-solr-03.ec2-east1.glassbeam.com:8983','gbp-solr-04.ec2-east1.glassbeam.com:8983'
+  #             ]
+  #   params:
+  #      group: ['jvm']
+ 
+  - job_name: 'prodTemporaryServer'
+    static_configs:
+    - targets: [
+                'gbp-bc2r-03-new.ec2-east1.glassbeam.com:9100'
+       ]        
+
+  - job_name: 'ProdLCPSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-lcp-07.ec2-east1.glassbeam.com:9100', 'gbp-lcp-21.ec2-east1.glassbeam.com:9100', 'gbp-lcp-23.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'StageLCPProcessMetrics'
+    static_configs:
+    - targets: [
+      'gbt-lcp-01.ec2-east1.glassbeam.com:9100','gbt-lcp-02.ec2-east1.glassbeam.com:9100'
+       ]
+               
+  - job_name: 'StageILBProcessMetrics'
+    static_configs:
+    - targets: [
+          'gbt-ilb-01.ec2-east1.glassbeam.com:9100'
+       ]
+
+  - job_name: 'CanonLCPSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-lcp-01.ec2-east1.glassbeam.com:9100', 'canon-lcp-02.ec2-east1.glassbeam.com:9100', 'canon-lcp-03.ec2-east1.glassbeam.com:9100','canon-lcp-04.ec2-east1.glassbeam.com:9100','canon-lcp-05.ec2-east1.glassbeam.com:9100'
+               ]
+
+
+               
+  - job_name: 'BlackBoxExporter'
+    scrape_interval: 5m
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+    static_configs:
+    - targets: [
+                'https://stagelogin.glassbeam.com'
+               ]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: gbp-monitor-03.ec2-east1.glassbeam.com:9115  # Blackbox exporter.
+
+          #  - job_name: 'SFTPMetrics'
+          #    scrape_interval: 120s
+          #    scrape_timeout: 1m
+          #    static_configs:
+          #    - targets: [
+          #                'localhost:8888'
+          #               ]
+
+               #  - job_name: 'SolrExporterCanonMetrics'
+               #    static_configs:
+               #    - targets: [
+               #                'canon-solr-01.ec2-east1.glassbeam.com:9854','canon-solr-02.ec2-east1.glassbeam.com:9854','canon-solr-03.ec2-east1.glassbeam.com:9854','canon-solr-04.ec2-east1.glassbeam.com:9854','canon-solr-05.ec2-east1.glassbeam.com:9854','canon-solr-06.ec2-east1.glassbeam.com:9854','canon-solr-07.ec2-east1.glassbeam.com:9854','canon-solr-08.ec2-east1.glassbeam.com:9854','canon-solr-09.ec2-east1.glassbeam.com:9854','canon-solr-10.ec2-east1.glassbeam.com:9854','canon-solr-11.ec2-east1.glassbeam.com:9854','canon-solr-12.ec2-east1.glassbeam.com:9854'
+               #               ]
+
+  - job_name: 'BastionSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-bst-04.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'ProdSBXSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-sbxbe-01.ec2-east1.glassbeam.com:9100','gbp-sbxfe-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'CanonSBXSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-sbx-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'StageSBXSystemMetrics'
+    static_configs:
+    - targets: [
+      'gbt-sbxbe-01.ec2-east1.glassbeam.com:9100', 'gbt-sbxfe-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'StageLCPSystemMetrics'
+    static_configs:
+    - targets: [
+                'gb4gb-lcp-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+#  - job_name: 'StageILBSystemMetrics'
+#    static_configs:
+#    - targets: [
+#                'gbt-ilb-11.ec2-east1.glassbeam.com:9100'
+#               ]
+
+  - job_name: 'ProdH2SystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-dh2-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'CanonH2SystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-h2-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'ProdILBSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-upl-01.ec2-east1.glassbeam.com:9100','gbp-upl-02.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'ProdCanonUPLSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-upl-01.ec2-east1.glassbeam.com:9100','canon-upl-02.ec2-east1.glassbeam.com:9100'
+               ]
+               
+  - job_name: 'CanonILBSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-ilb-01.ec2-east1.glassbeam.com:9100','canon-ilb-02.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'ProdRulesEngineSystemMetrics'
+    static_configs:
+    - targets: [
+      'gbp-rules-01.ec2-east1.glassbeam.com:9100','gbp-rules-02.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'CanonRulesEngineSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-rules-01.ec2-east1.glassbeam.com:9100','canon-rules-02.ec2-east1.glassbeam.com:9100'
+               ]
+
+
+
+  - job_name: 'ProdC2SSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-c2r-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+
+  - job_name: 'ProdMLSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-mls-01.ec2-east1.glassbeam.com:9100','gbp-mls-02.ec2-east1.glassbeam.com:9100','gbp-mls-03.ec2-east1.glassbeam.com:9100','gbp-mls-05.ec2-east1.glassbeam.com:9100'
+               ]
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: gbp-mls-05\.ec2-east1\.glassbeam\.com:9100|gbp-mls-03\.ec2-east1\.glassbeam\.com:9100
+        action: drop               
+
+               #  - job_name: 'ProdMLCommonUEDMetrics'
+               #    static_configs:
+               #    - targets: [
+               #                'gbp-mls-01.ec2-east1.glassbeam.com:4472'
+               #               ]
+
+               #  - job_name: 'ProdMLCommonManagerMetrics'
+               #    static_configs:
+               #    - targets: [
+               #                'gbp-mls-02.ec2-east1.glassbeam.com:4001'
+               #               ]
+
+               #  - job_name: 'CanonMLCommonADMetrics'
+               #    static_configs:
+               #    - targets: [
+               #                'canon-mls-01.ec2-east1.glassbeam.com:9000'
+               #               ]
+
+               #  - job_name: 'CanonMLManagerMetrics'
+               #    static_configs:
+               #    - targets: [
+               #                'canon-mls-02.ec2-east1.glassbeam.com:4001'
+               #               ]               
+
+
+
+  - job_name: 'ProdVNCSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-vnc-01.ec2-east1.glassbeam.com:9100'
+               ]
+               
+
+  - job_name: 'CanonMLSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-ae-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'StageMLSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbt-mls-02.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'StageETLSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbt-bc2r-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'ProdETLSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-bc2r-03.ec2-east1.glassbeam.com:9100','gbp-bc2r-06.ec2-east1.glassbeam.com:9100','gbp-dbc2r-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'CanonETLSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-bc2r-01.ec2-east1.glassbeam.com:9100','canon-bc2r-02.ec2-east1.glassbeam.com:9100','canon-bc2r-03.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'StageVerticaSystemMetrics'
+    scrape_timeout: 30s
+    static_configs:
+    - targets: [
+                'gbt-vert-12.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'ProdVerticaSystemMetrics'
+    static_configs:
+    - targets: [ 
+                'gbp-vert-10.ec2-east1.glassbeam.com:9100', 'gbp-vert-11.ec2-east1.glassbeam.com:9100', 'gbp-vert-08.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'ProdVertica1SystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-vert-01.ec2-east1.glassbeam.com:9100', 'gbp-vert-02.ec2-east1.glassbeam.com:9100', 'gbp-vert-03.ec2-east1.glassbeam.com:9100'
+               ]
+
+
+  - job_name: 'ProdVerticaOpsSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-vertops-01.ec2-east1.glassbeam.com:9100', 'gbp-vertops-02.ec2-east1.glassbeam.com:9100', 'gbp-vertops-03.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'CanonVerticaSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-vert-01.ec2-east1.glassbeam.com:9100', 'canon-vert-02.ec2-east1.glassbeam.com:9100', 'canon-vert-03.ec2-east1.glassbeam.com:9100'
+               ]
+
+
+  - job_name: 'ProdKubernatesSystemMetrics'
+    scrape_timeout: 30s
+    static_configs: 
+    - targets: [
+                'gbp-k8sslave-01.ec2-east1.glassbeam.com:9100', 'gbp-k8smaster-01.ec2-east1.glassbeam.com:9100'
+               ]
+               
+  - job_name: 'StageSolrSystemMetrics'
+    scrape_timeout: 30s
+    static_configs:
+    - targets: [
+                'gbt-solr-11.ec2-east1.glassbeam.com:9100', 'gbt-solr-12.ec2-east1.glassbeam.com:9100', 'gbt-solr-13.ec2-east1.glassbeam.com:9100', 'gbt-solr-14.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'ProdSolrSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-solr-01.ec2-east1.glassbeam.com:9100', 'gbp-solr-02.ec2-east1.glassbeam.com:9100', 'gbp-solr-03.ec2-east1.glassbeam.com:9100', 'gbp-solr-04.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'CanonSolrSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-solr-01.ec2-east1.glassbeam.com:9100', 'canon-solr-02.ec2-east1.glassbeam.com:9100', 'canon-solr-03.ec2-east1.glassbeam.com:9100', 'canon-solr-04.ec2-east1.glassbeam.com:9100','canon-solr-05.ec2-east1.glassbeam.com:9100','canon-solr-06.ec2-east1.glassbeam.com:9100','canon-solr-07.ec2-east1.glassbeam.com:9100','canon-solr-08.ec2-east1.glassbeam.com:9100','canon-solr-09.ec2-east1.glassbeam.com:9100','canon-solr-10.ec2-east1.glassbeam.com:9100','canon-solr-11.ec2-east1.glassbeam.com:9100','canon-solr-12.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'StageKafkaSystemMetrics'
+    scrape_timeout: 30s
+    static_configs:
+    - targets: [
+                'gbt-kafka-11.ec2-east1.glassbeam.com:9100','gbt-kafka-12.ec2-east1.glassbeam.com:9100','gbt-kafka-13.ec2-east1.glassbeam.com:9100'
+               ]
+
+
+               #  - job_name: 'ProdKafkaJVMMetrics'
+    #    scrape_interval: 30m
+      #    scrape_timeout: 30s
+      #    static_configs:
+      #    - targets: [
+      #                'gbp-kafka-01.ec2-east1.glassbeam.com:7071','gbp-kafka-02.ec2-east1.glassbeam.com:7071','gbp-kafka-03.ec2-east1.glassbeam.com:7071'
+                #               ]
+
+               #  - job_name: 'CanonKafkaJVMMetrics'
+               #    scrape_interval: 5m
+               #    scrape_timeout: 30s
+               #    static_configs:
+               #    - targets: [
+               #                'canon-kafka-01.ec2-east1.glassbeam.com:7071','canon-kafka-02.ec2-east1.glassbeam.com:7071','canon-kafka-03.ec2-east1.glassbeam.com:7071','canon-kafka-04.ec2-east1.glassbeam.com:7071','canon-kafka-05.ec2-east1.glassbeam.com:7071'
+               #               ]
+
+               #  - job_name: 'StageKafkaJVMMetrics'
+    #    scrape_interval: 5m
+      #    scrape_timeout: 30s
+      #    static_configs:
+      #    - targets: [
+      #                'gbt-kafka-11.ec2-east1.glassbeam.com:7071','gbt-kafka-12.ec2-east1.glassbeam.com:7071','gbt-kafka-13.ec2-east1.glassbeam.com:7071'
+                # ]
+
+
+               #  - job_name: 'ProdKafkaLagMetrics'
+               #    scrape_interval: 5m
+               #    static_configs:
+               #    - targets: [
+               #                'gbp-monitor-01.ec2-east1.glassbeam.com:7071'
+               #               ]
+
+               #  - job_name: 'CanonKafkaLagMetrics'
+               #    scrape_interval: 5m
+               #    static_configs:
+               #    - targets: [
+               # 'gbp-monitor-01.ec2-east1.glassbeam.com:7072'
+               #               ]
+
+  - job_name: 'RunningProcessStatus'
+    static_configs:
+    - targets: [
+                'gbp-monitor-03.ec2-east1.glassbeam.com:9091'
+               ]
+
+  - job_name: 'ProdKafkaSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbp-kafka-01.ec2-east1.glassbeam.com:9100','gbp-kafka-02.ec2-east1.glassbeam.com:9100','gbp-kafka-03.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'CanonKafkaSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-kafka-01.ec2-east1.glassbeam.com:9100','canon-kafka-02.ec2-east1.glassbeam.com:9100','canon-kafka-03.ec2-east1.glassbeam.com:9100','canon-kafka-04.ec2-east1.glassbeam.com:9100','canon-kafka-05.ec2-east1.glassbeam.com:9100'
+               ]
+
+
+  - job_name: 'StageCassandraSystemMetrics'
+    scrape_timeout: 30s
+    static_configs:
+    - targets: [
+                'gbt-cass-11.ec2-east1.glassbeam.com:9100', 'gbt-cass-12.ec2-east1.glassbeam.com:9100', 'gbt-cass-13.ec2-east1.glassbeam.com:9100'
+               ]
+
+               #  - job_name: 'StageCassandraProcessMetrics'
+               #    scrape_interval: 5m
+               #    scrape_timeout: 30s
+               #    static_configs:
+               #    - targets: [
+               #                'gbt-cass-11.ec2-east1.glassbeam.com:8082', 'gbt-cass-12.ec2-east1.glassbeam.com:8082', 'gbt-cass-13.ec2-east1.glassbeam.com:8082'
+               #               ]
+
+  - job_name: 'ProdCassandraSystemMetrics'
+    scrape_interval: 1m
+    scrape_timeout: 30s
+
+    static_configs:
+    - targets: [ 
+      'gbp-cass-01.ec2-east1.glassbeam.com:9100', 'gbp-cass-02.ec2-east1.glassbeam.com:9100', 'gbp-cass-03.ec2-east1.glassbeam.com:9100', 'gbp-cass-04.ec2-east1.glassbeam.com:9100', 'gbp-cass-05.ec2-east1.glassbeam.com:9100', 'gbp-cass-06.ec2-east1.glassbeam.com:9100'
+               ] 
+     
+  - job_name: 'ProdCassandraProcessMetrics'
+    scrape_interval: 2m
+    scrape_timeout: 30s
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+      #    static_configs:
+      #    - targets: [
+      #                'gbp-cass-01.ec2-east1.glassbeam.com:8082', 'gbp-cass-02.ec2-east1.glassbeam.com:8082', 'gbp-cass-03.ec2-east1.glassbeam.com:8082', 'gbp-cass-04.ec2-east1.glassbeam.com:8082', 'gbp-cass-05.ec2-east1.glassbeam.com:8082'
+      #               ]
+
+      #  - job_name: 'CanonCassandraProcessMetrics'
+      #scrape_interval: 2m
+      #scrape_timeout: 30s
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+      #static_configs:
+      #- targets: [
+      #         'canon-cass-01.ec2-east1.glassbeam.com:8082', 'canon-cass-02.ec2-east1.glassbeam.com:8082', 'canon-cass-03.ec2-east1.glassbeam.com:8082', 'canon-cass-04.ec2-east1.glassbeam.com:8082', 'canon-cass-05.ec2-east1.glassbeam.com:8082'
+      #        ]
+
+  - job_name: 'CanonCassandraSystemMetrics'
+    scrape_interval: 1m
+    scrape_timeout: 30s
+    static_configs:
+    - targets: [ 
+                'canon-cass-01.ec2-east1.glassbeam.com:9100', 'canon-cass-02.ec2-east1.glassbeam.com:9100', 'canon-cass-03.ec2-east1.glassbeam.com:9100', 'canon-cass-04.ec2-east1.glassbeam.com:9100', 'canon-cass-05.ec2-east1.glassbeam.com:9100'
+               ]
+
+               #  - job_name: 'OpsSystemmetrics'
+               #
+               #    static_configs:
+               #    - targets: ['gbt-ops-01.ec2-east1.glassbeam.com:9100']
+
+
+  - job_name: 'AlertManagerSystemmetrics'
+
+    static_configs:
+    - targets: ['gbp-dae-01.ec2-east1.glassbeam.com:9100']
+      
+
+      #  - job_name: 'AlertManagerProcessetrics'
+  
+      #    static_configs:
+      #    - targets: ['gbp-dae-01.ec2-east1.glassbeam.com:9040']
+      
+
+  - job_name: 'StageDockerSystemMetrics'
+
+    static_configs:
+    - targets: [
+               ]
+
+
+  - job_name: 'StageDockerContainerMetrics'
+    scrape_interval: 1m
+    scrape_timeout: 30s
+    static_configs:
+    - targets: [ 
+               ]
+
+  - job_name: 'StageISSystemMetrics'
+
+    static_configs:
+    - targets: [ 
+      'gbt-is-01.ec2-east1.glassbeam.com:9100'
+               ]
+  - job_name: 'ProdISSystemMetrics'
+
+    static_configs:
+    - targets: [
+                'gbp-is-01.ec2-east1.glassbeam.com:9100','gbp-is-02.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'CanonISSystemMetrics'
+    static_configs:
+    - targets: [
+                'canon-ui-01.ec2-east1.glassbeam.com:9100','canon-ui-02.ec2-east1.glassbeam.com:9100'
+               ]
+
+  - job_name: 'StageUMSSystemMetrics'
+
+    static_configs:
+    - targets: [
+                'gbt-ums-01.ec2-east1.glassbeam.com:9100'
+               ]
+
+
+  - job_name: 'ProdUMSSystemMetrics'
+
+    static_configs:
+    - targets: [
+                'gbp-ums-01.ec2-east1.glassbeam.com:9100','gbp-ums-02.ec2-east1.glassbeam.com:9100'
+               ]
+
+               #  - job_name: 'StageKafkaLagMetrics'
+  
+               #    scrape_interval: 1m
+               #    scrape_timeout: 10s
+
+               #    static_configs:
+               #    - targets: [ 'gbt-ops-02.ec2-east1.glassbeam.com:7071'
+               #               ]
+  
+  - job_name: 'ProdWindowsExporter'
+
+    scrape_interval: 5s
+
+    static_configs:
+    - targets: [ 
+                'gbp-tbl-01.ec2-east1.glassbeam.com:9182','gbp-logi-01.ec2-east1.glassbeam.com:9182'
+               ]
+
+  - job_name: 'CanonWindowsExporter'
+
+    scrape_interval: 5s
+
+    static_configs:
+    - targets: [
+                'canon-tbl-01.ec2-east1.glassbeam.com:9182','canon-logi-01.ec2-east1.glassbeam.com:9182'
+               ]
+  - job_name: 'Canonmls'
+
+    scrape_interval: 5s
+
+    static_configs:
+    - targets: [
+                'canon-mls-01.ec2-east1.glassbeam.com:9100','canon-mls-02.ec2-east1.glassbeam.com:9100','canon-mls-03.ec2-east1.glassbeam.com:9100'
+               ]
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: canon-mls-03\.ec2-east1\.glassbeam\.com:9100
+        action: drop    
+
+
+               
+  - job_name: 'StageWindowsExporter'
+
+    scrape_interval: 5s
+
+
+  - job_name: 'ProdUSMeshExporter'
+
+    scrape_interval: 5s
+
+    static_configs:
+    - targets: [
+      'gbp-usmesh-01.ec2-east1.glassbeam.com:9100'
+               ]
+  
+  - job_name: 'Stagerulesmetrics'
+
+    scrape_interval: 5s
+ 
+    static_configs:
+    - targets: [
+      'gbt-rules-02.ec2-east1.glassbeam.com:9100'
+               ]
+
+
+  - job_name: 'devLCPSystemMetrics'
+    static_configs:
+    - targets: [
+                'gbd-lcp-09.ec2-east1.glassbeam.com:9100'
+               ]               
+      
+  - job_name: 'prodmonitorServer'
+    static_configs:
+    - targets: [
+                'gbp-monitor-03.ec2-east1.glassbeam.com:9100'
+               ]              
+
+               #  - job_name: 'blackbox_tcp'
+               #    metrics_path: /probe
+               #    params:
+               #      module: [tcp_connect]  # TCP port monitoring
+               #    static_configs:
+               #      - targets:
+               #        - "gbp-mls-01.ec2-east1.glassbeam.com:4472"
+               #        - "gbp-mls-02.ec2-east1.glassbeam.com:4001"
+               #        - "canon-mls-01.ec2-east1.glassbeam.com:9000"
+               #        - "canon-mls-02.ec2-east1.glassbeam.com:4001"
+               #        - "127.0.0.1:6543"
+
+
+#Jenkins Server
+  - job_name: 'jenkins'
+    static_configs:
+    - targets: [
+      'jenkins-server.ec2-east1.glassbeam.com:9100'
+
+               ]
+
+
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [ssl_cert]  # Look for a HTTP 200 response.
+    static_configs:
+      - targets:
+        - https://gbp-solr-01.ec2-east1.glassbeam.com:8983
+        - https://login.glassbeam.com
+        - https://gbp-sbx-04.glassbeam.com
+        - https://gbreports.glassbeam.com
+        - https://gbprodwb.glassbeam.com
+        - https://login.glassbeam.com
+        - https://canonui.glassbeam.com
+        - https://canonis.glassbeam.com
+        - https://canonsbx.glassbeam.com
+        - https://canonreports.glassbeam.com
+        - https://canonwb.glassbeam.com
+        - https://login.glassbeamfederal.com
+        - https://ui.glassbeamfederal.com
+        - https://is.glassbeamfederal.com
+        - https://sbx.glassbeamfederal.com
+        - https://reports.glassbeamfederal.com
+        - https://wb.glassbeamfederal.com
+        - https://test.remote.glassbeam.com
+
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: localhost:9115  # The blackbox exporter's real hostname:port

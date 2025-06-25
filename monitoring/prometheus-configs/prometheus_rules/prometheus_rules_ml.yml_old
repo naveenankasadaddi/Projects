@@ -1,0 +1,47 @@
+groups:
+  - name: Production_rules_ml
+    rules:
+      - alert: P1:MLCanon_AD_Process_Check
+        expr: up{instance="http://canon-mls-01.ec2-east1.glassbeam.com:9000", job="blackbox_tcp"} == 0
+        for: 5m
+        labels:
+          severity: Critical
+          custom_alert_interval: ml
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+
+      - alert: P1:MLCanon_MLManager_Process_Check
+        expr: up{instance="http://canon-mls-02.ec2-east1.glassbeam.com:4001", job="blackbox_tcp"}  == 0
+        for: 5m
+        labels:
+          severity: Critical
+          custom_alert_interval: ml
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:MLCommon_UED_Process_Check
+        expr: up{instance="http://gbp-mls-01.ec2-east1.glassbeam.com:4472", job="blackbox_tcp"} == 0
+        for: 5m
+        labels:
+          severity: Critical
+          custom_alert_interval: ml
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:MLCommon_MLManager_Process_Check
+        expr: up{instance="http://gbp-mls-02.ec2-east1.glassbeam.com:4001", job="blackbox_tcp"}  == 0
+        for: 5m
+        labels:
+          severity: Critical
+          custom_alert_interval: ml
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+
+
+

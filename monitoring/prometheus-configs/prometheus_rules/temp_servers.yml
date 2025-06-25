@@ -1,0 +1,126 @@
+groups:
+
+  - name: System_Rules
+    rules:
+
+      - record: node_memory_MemFree_percent
+        expr: 100 - (100 * node_memory_MemFree_bytes / node_memory_MemTotal_bytes)
+
+           
+      - record: node_cpu_load
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[15m])) * 100)
+
+
+      - record: node_filesystem_free_percent_root
+        expr: 100 * node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}
+
+      #- record: node_filesystem_free_percent
+      #  expr: (node_filesystem_avail_bytes{fstype!="tmpfs"} * 100) /(node_filesystem_size_bytes{fstype!="tmpfs"})
+
+      - record: node_filesystem_free_percent_ebs
+        expr: 100 * node_filesystem_free_bytes{mountpoint="/ebs"} / node_filesystem_size_bytes{mountpoint="/ebs"}
+
+      - record: node_ram_free_percent
+        expr: 100 - (100 * (1 - ((avg_over_time(node_memory_MemFree_bytes{job=~".*"}[5m]) + avg_over_time(node_memory_Cached_bytes{job=~".*"}[5m]) + avg_over_time(node_memory_Buffers_bytes{job=~".*"}[5m])) / avg_over_time(node_memory_MemTotal_bytes{job=~".*"}[5m]))))
+
+  - name: System_Process_Rules
+    rules:
+
+#DiskSpaceFreePercentOnEBS
+       - alert: P2:DiskSpaceFreePercentOnEBS
+         expr: node_filesystem_free_percent_ebs{instance=~"jenkins-server.ec2-east1.glassbeam.com:9100"} <= 20 > 10
+         for: 15m
+         labels:
+           severity: Warning
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 20% or less Free disk space at /ebs"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P1:DiskSpaceFreePercentOnEBS
+         expr: node_filesystem_free_percent_ebs{instance=~"jenkins-server.ec2-east1.glassbeam.com:9100"} <= 10
+         for: 15m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Free disk space at /ebs"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+           
+
+        
+       - alert: P2:DiskSpaceFreePercentOnRoot
+         expr: node_filesystem_free_percent_root{instance=~"jenkins-server.ec2-east1.glassbeam.com:9100"} <= 20 > 10
+         for: 15m
+         labels:
+           severity: Warning
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 20% or less Free disk space at /(Root)"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P1:DiskSpaceFreePercentOnRoot
+         expr: node_filesystem_free_percent_root{instance=~"jenkins-server.ec2-east1.glassbeam.com:9100"} <= 10
+         for: 15m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Free disk space at /(Root)"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+#HostHighCpuUsage for  Platform
+       - alert: P2:HostHighCpuUsage
+         expr: node_cpu_load{instance=~"jenkins-server.ec2-east1.glassbeam.com:9100"} > 90
+         for: 15m
+         labels:
+           severity: warning
+           custom_alert_interval: devops
+         annotations:
+           summary: Host high CPU load (instance {{ $labels.instance }})
+           description: "CPU load is High\n  VALUE = {{ humanize $value }}\n  LABELS = {{ $labels.instance }}"
+           
+
+
+#For 2 cpu nodes Platform
+       - alert: P1:HostHighLoad
+         expr: node_load15{instance=~"jenkins-server.ec2-east1.glassbeam.com:9100"} > 2.0*((count without(cpu, mode) (node_cpu_seconds_total{mode="idle",instance=~"gbp-bc2r-03-new.ec2-east1.glassbeam.com:9100"})) > 2 )
+         for: 30m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: Host high load on (instance {{ $labels.instance }})
+           description: "15 Minutes LoadAverage is High on {{ $labels.instance }} with Value: {{ humanize $value }}"
+           
+       - alert: P1:HostOutOfMemory
+         expr: node_ram_free_percent{instance=~"jenkins-server.ec2-east1.glassbeam.com:9100"} <= 5
+         for: 15m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Ram left "
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+           
+           
+       - alert: P2:HostOutOfMemory
+         expr: node_ram_free_percent{instance=~"jenkins-server.ec2-east1.glassbeam.com:9100"} <= 6 > 5
+         for: 15m
+         labels:
+           severity: Warning
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Ram left "
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+
+       - alert: P2:BC2R_Process_Check
+         expr: up{exported_job=~"bc2r",exported_instance=~"jenkins-server.ec2-east1.glassbeam.com"} == 0
+         for: 1m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+           description: "[ {{ $labels.exported_job }} ] Process is down"
+             

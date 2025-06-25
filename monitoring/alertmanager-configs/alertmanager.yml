@@ -1,0 +1,387 @@
+global:
+  resolve_timeout: 5m
+
+route:
+
+  #group_by: ['alertname']
+  #group_wait: 1s          #How long to wait to buffer alerts of the same group before sending a notification initially.
+  #group_interval: 1m #How long to wait before sending notifications about new alerts that are added to a group of alerts that have been alerted before
+  #repeat_interval: 10m    #How long to wait before re-sending a given alert that has already been sent in a notification.
+  receiver: 'email'
+  routes:
+   - match:
+      custom_alert_interval: loadavg
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 15m  
+     receiver: 'devops'
+#Recently added routes on Sep 13
+   - match:
+      custom_alert_interval: platform
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 15m
+     receiver: 'platform'
+
+   - match:
+      custom_alert_interval: solutions
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 15m
+     receiver: 'solutions'
+
+
+   - match:
+      custom_alert_interval: apps
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 15m
+     receiver: 'apps'
+
+   - match:
+      custom_alert_interval: dlmonitoring
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 15m
+     receiver: 'dlmonitoring'      
+
+   - match:
+      custom_alert_interval: ml
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 15m
+     receiver: 'ml'       
+#close
+
+   - match:
+      custom_alert_interval: 5minutes
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 5m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 15minutes
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 15m  
+     receiver: 'devops'
+
+   - match:
+      custom_alert_interval: 30minutes
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 30m  
+     receiver: 'devops'
+
+   - match:
+      custom_alert_interval: 1hour
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 60m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: devops_platform
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 60m
+     receiver: 'devops_platform'
+       
+   - match:
+      custom_alert_interval: CpuUsage
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 60m  
+     receiver: 'devops'
+
+   - match:
+      custom_alert_interval: 1hour_stage
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 60m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 1hour_containers
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 60m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 1hour_containers_prod
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 60m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 2hour
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 120m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 3hour
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 180m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 4hour
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 240m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 6hour
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 360m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 6hour_stage
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 360m  
+     receiver: 'devops'
+
+   - match:
+      custom_alert_interval: 8hour
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 480m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 12hour
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 720m  
+     receiver: 'devops_platform'
+
+   - match:
+      custom_alert_interval: 12hour
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 720m
+     receiver: '12hour_devops_platform_prod'
+
+
+   - match:
+      custom_alert_interval: 1day
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 24h
+     receiver: 'devops'
+
+   - match:
+      custom_alert_interval: devops
+     group_by: ['alertname']
+     group_wait: 1s
+     group_interval: 1m
+     repeat_interval: 24h
+     receiver: 'devops'
+
+    
+receivers:
+ - name: 'email'
+   email_configs:
+   - to: 'devops@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers: 
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+ - name: 'devops'
+   email_configs:
+   - to: 'dl-devops@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers: 
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+ - name: 'dlmonitoring'
+   email_configs:
+   - to: 'dl-monitoring@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers:
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+ - name: 'devopshighcpu'
+   email_configs:
+   - to: 'dl-devops@glassbeam.com,sawan@glassbeam.com,rajashekar.siddu@glassbeam.com,praveen.ashok@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers:
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+
+ - name: 'devops_platform'
+   email_configs:
+   - to: 'dl-devops@glassbeam.com,dl-monitoring@glassbeam.com,dl-platform@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers: 
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+ - name: '12hour_devops_platform_prod'
+   email_configs:
+   - to: 'dl-devops@glassbeam.com,dl-platform@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers:  
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+
+ - name: 'devops_platform_prod'
+   email_configs:
+   - to: 'dl-devops@glassbeam.com,rajashekar.siddu@glassbeam.com,sawan.verma@glassbeam.com,narayana.reddy@glassbeam.com,praveen.ashok@glassbeam.com,anurag.mahendru@glassbeam.com,naveen.mahantesh@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers: 
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+#Recently added recepiants
+ - name: 'platform'
+   email_configs:
+   - to: 'dl-platform@glassbeam.com,dl-devops@glassbeam.com,dl-monitoring@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers:
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+ - name: 'solutions'
+   email_configs:
+   - to: 'dl-solutions@glassbeam.com,dl-monitoring@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers:
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+ - name: 'apps'
+   email_configs:
+   - to: 'dl-apps@glassbeam.com,dl-devops@glassbeam.com,dl-monitoring@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers:
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'         
+
+ - name: 'devenv'
+   email_configs:
+   - to: 'ashik.kalasavalli@glassbeam.com,aklank.choudhary@glassbeam.com,dl-devops@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers:
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+ - name: 'mlteam'
+   email_configs:
+   - to: 'sanjay.mahadevappa@glassbeam.com,saumitra.srivastav@glassbeam.com,dl-devops@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers:
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+         
+ - name: 'ml'
+   email_configs:
+   - to: 'dl-monitoring@glassbeam.com,mlteam@glassbeam.com'
+     from: 'alert_manager_new@glassbeam.com'
+     smarthost: 'email-smtp.us-east-1.amazonaws.com:587'
+     auth_username: '<auth_username>'
+     auth_password: '<auth_password>'
+     send_resolved: true
+     #html: '{{ template "email" .}}'
+     headers:
+       subject: '{{ if gt (len .Alerts.Firing) 0 }}ALERT - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}{{ .CommonLabels.severity }}{{else}}RESOLVED - {{ template "node.name" . }}{{ .CommonLabels.alertname }}{{ ": " }}OK{{end}}'
+
+
+
+inhibit_rules:
+  - source_match:
+      severity: 'Critical'
+    target_match:
+      severity: 'Warning'
+    equal: ['alertname', 'dev', 'instance']
+
+
+templates:
+- '/ebs/alertmanager/current/templates/getNode.yml'

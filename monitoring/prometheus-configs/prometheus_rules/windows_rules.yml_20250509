@@ -1,0 +1,140 @@
+groups:
+  - name: System_Rules
+    rules:
+      #CPU Usage
+      - record: windows_node_cpu_load
+        expr:  100 - (avg by (instance) (irate(windows_cpu_time_total{mode="idle"}[15m])) * 100)
+
+      #Ram usage
+      - record: windows_node_ram_usage
+        expr: 100 - 100 * (windows_os_physical_memory_free_bytes/ windows_cs_physical_memory_bytes) 
+
+      #Disk usage    
+      - record: node_free_percent_C_Drive
+        expr: 100 * (windows_logical_disk_free_bytes{volume="C:"} / windows_logical_disk_size_bytes{volume="C:"})
+
+      - record: node_free_percent_D_Drive
+        expr: 100 * (windows_logical_disk_free_bytes{volume="D:"} / windows_logical_disk_size_bytes{volume="D:"})
+
+      - record: node_free_percent_E_Drive
+        expr: 100 * (windows_logical_disk_free_bytes{volume="E:"} / windows_logical_disk_size_bytes{volume="E:"})          
+
+  - name: System_Process_Rules
+    rules:
+#WindowsHighCpuUsage
+       - alert: P2:WindowsHighCpuUsage
+         expr: windows_node_cpu_load{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} > 80 <90
+         for: 2m
+         labels:
+           severity: warning
+           custom_alert_interval: solutions
+         annotations:
+           summary: "High CPU Usage on {{ $labels.instance }}"
+           description: "CPU load is High\n  VALUE = {{ humanize $value }}\n  LABELS = {{ $labels.instance }}"
+
+       - alert: P1:WindowsCpuUsage
+         expr: windows_node_cpu_load{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} > 90
+         for: 2m
+         labels:
+           severity: Critical
+           custom_alert_interval: solutions
+         annotations:
+           summary:  "High CPU Usage on {{ $labels.instance }}"
+           description: "CPU load is High\n  VALUE = {{ humanize $value }}\n  LABELS = {{ $labels.instance }}"
+           
+#DiskSpaceFreePercent_C_Drive           
+       - alert: P2:DiskSpaceFreePercent_C_Drive
+         expr: node_free_percent_C_Drive{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} > 80 < 90
+         for: 2m
+         labels:
+           severity: Warning
+           custom_alert_interval: solutions
+         annotations:
+           summary: "Instance {{ $labels.instance }} has 20% or less Free disk space on C_Drive"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+       
+       - alert: P1:DiskSpaceFreePercent_C_Drive
+         expr: node_free_percent_C_Drive{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} > 90
+         for: 2m
+         labels:
+           severity: Critical
+           custom_alert_interval:  solutions
+         annotations:
+           summary: "Instance {{ $labels.instance }} has 10% or less Free disk space on C_Drive"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+#DiskSpaceFreePercent_D_Drive        
+       - alert: P2:DiskSpaceFreePercent_D_Drive
+         expr: node_free_percent_D_Drive{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} >= 80 <90
+         for: 2m
+         labels:
+           severity: Warning
+           custom_alert_interval: solutions
+         annotations:
+           summary: "Instance {{ $labels.instance }} has 20% or less Free disk space on D_Drive"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."          
+
+       - alert: P1:DiskSpaceFreePercent_D_Drive
+         expr: node_free_percent_D_Drive{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} > 90
+         for: 2m
+         labels:
+           severity: Critical
+           custom_alert_interval: solutions
+         annotations:
+           summary: "Instance {{ $labels.instance }} has 20% or less Free disk space on D_Drive"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+#DiskSpaceFreePercent_E_Drive
+       - alert: P2:DiskSpaceFreePercent_E_Drive
+         expr: node_free_percent_E_Drive{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} >= 80 <90
+         for: 2m
+         labels:
+           severity: Warning
+           custom_alert_interval: solutions
+         annotations:
+           summary: "Instance {{ $labels.instance }} has 20% or less Free disk space on D_Drive"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P1:DiskSpaceFreePercent_E_Drive
+         expr: node_free_percent_E_Drive{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} > 90
+         for: 2m
+         labels:
+           severity: Critical
+           custom_alert_interval: solutions
+         annotations:
+           summary: "Instance {{ $labels.instance }} has 20% or less Free disk space on D_Drive"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+
+#WindowsOutOfMemory           
+       - alert: P2:WindowsOutOfMemory
+         expr: windows_node_ram_usage{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} >= 80 < 90 
+         for: 2m
+         labels:
+           severity: Warning
+           custom_alert_interval: solutions
+         annotations:
+           summary: "Instance {{ $labels.instance }} has 20% or less Ram left "
+           description: "{{ $labels.instance }} has only `{{ humanize $value }}%` or less free."
+
+       - alert: P1:WindowsOutOfMemory
+         expr: windows_node_ram_usage{instance=~"(gbt|gbp|canon)-(tbl|logi)-(01|02).ec2-east1.glassbeam.com:9182"} >= 90
+         for: 2m
+         labels:
+           severity: Critical
+           custom_alert_interval: solutions
+         annotations:
+           summary: "Instance {{ $labels.instance }} has 10% or less Ram left "
+           description: "{{ $labels.instance }} has only `{{ humanize $value }}%` or less free."
+
+             
+#Node_exporter check 
+       - alert: P2:NodeExporter_Process_Check
+         expr: up{instance=~"(gbp|canon)-.*-.*:9182"} == 0
+         for: 2m
+         labels:
+           severity: Critical
+           custom_alert_interval: solutions
+         annotations:
+           summary: "ALERT - [{{ $labels.instance }}] / [ {{ $labels.job }} ]:CRITICAL"
+           description: "The NodeExporter Process is down"

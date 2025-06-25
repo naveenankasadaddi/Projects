@@ -1,0 +1,241 @@
+groups:
+  - name: System_Rules
+    rules:
+      - record: windows_node_cpu_load
+        expr: 100 - avg by(instance) (rate(windows_cpu_time_total{mode="idle"}[15m])) * 100
+
+      - record: Windows_node_memory_MemFree_percent
+        expr: 100 - (1 - windows_os_physical_memory_free_bytes / windows_os_visible_memory_bytes) * 100
+
+      - record: node_memory_MemFree_percent
+        expr: 100 - (100 * node_memory_MemFree_bytes / node_memory_MemTotal_bytes)
+
+      - record: certificate_check 
+        expr: floor((probe_ssl_earliest_cert_expiry{job=~"BlackBoxExporter"} - time() < 86400*90)/86400)
+           
+      - record: node_cpu_load
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[15m])) * 100)
+
+      - record: node_free_percent_C_Drive
+        expr: 100 * (windows_logical_disk_free_bytes{volume="C:"} / windows_logical_disk_size_bytes{volume="C:"})
+
+      - record: node_free_percent_D_Drive
+        expr: 100 * (windows_logical_disk_free_bytes{volume="D:"} / windows_logical_disk_size_bytes{volume="D:"})
+
+      - record: node_filesystem_free_percent_root
+        expr: 100 * node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}
+
+      #- record: node_filesystem_free_percent
+      #  expr: (node_filesystem_avail_bytes{fstype!="tmpfs"} * 100) /(node_filesystem_size_bytes{fstype!="tmpfs"})
+
+      - record: node_filesystem_free_percent_ebs
+        expr: 100 * node_filesystem_free_bytes{mountpoint="/ebs"} / node_filesystem_size_bytes{mountpoint="/ebs"}
+
+      - record: node_ram_free_percent
+        expr: 100 - (100 * (1 - ((avg_over_time(node_memory_MemFree_bytes{job=~".*"}[5m]) + avg_over_time(node_memory_Cached_bytes{job=~".*"}[5m]) + avg_over_time(node_memory_Buffers_bytes{job=~".*"}[5m])) / avg_over_time(node_memory_MemTotal_bytes{job=~".*"}[5m]))))
+
+
+  - name: System_Process_Rules
+    rules:
+       - alert: P2:DiskSpaceFreePercentOnEBS_On_Platform
+         expr: node_filesystem_free_percent_ebs{instance=~"gbt-(h2|ilb|bc2r|lcp|rules)-(01|02).ec2-east1.glassbeam.com:9100"} <= 20 > 10
+         for: 480m
+         labels:
+           severity: Warning
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 20% or less Free disk space at /ebs"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P1:DiskSpaceFreePercentOnEBS_On_Platform
+         expr: node_filesystem_free_percent_ebs{instance=~"gbt-(h2|ilb|bc2r|lcp|rules)-(01|02).ec2-east1.glassbeam.com:9100"} <= 10
+         for: 480m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Free disk space at /ebs"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+           
+           
+           
+       - alert: P2:DiskSpaceFreePercentOnEBS_On_Apps
+         expr: node_filesystem_free_percent_ebs{instance=~"gbt-(is|ums)-01.ec2-east1.glassbeam.com:9100"} <= 20 > 10
+         for: 480m
+         labels:
+           severity: Warning
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 20% or less Free disk space at /ebs"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P1:DiskSpaceFreePercentOnEBS_On_Apps
+         expr: node_filesystem_free_percent_ebs{instance=~"gbt-(is|ums)-01.ec2-east1.glassbeam.com:9100"} <= 10
+         for: 480m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Free disk space at /ebs"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P2:DiskSpaceFreePercentOnRoot_On_Platform
+         expr: node_filesystem_free_percent_root{instance=~"gbt-(h2|ilb|bc2r|lcp|rules)-(01|02).ec2-east1.glassbeam.com:9100"} <= 20 > 10
+         for: 480m
+         labels:
+           severity: Warning
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 20% or less Free disk space at /(Root)"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P1:DiskSpaceFreePercentOnRoot_On_Platform
+         expr: node_filesystem_free_percent_root{instance=~"gbt-(h2|ilb|bc2r|lcp|rules)-(01|02).ec2-east1.glassbeam.com:9100"} <= 10
+         for: 480m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Free disk space at /(Root)"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+
+       - alert: P2:DiskSpaceFreePercentOnRoot_On_Apps
+         expr: node_filesystem_free_percent_root{instance=~"gbt-(is|ums)-01.ec2-east1.glassbeam.com:9100"} <= 20 > 10
+         for: 480m
+         labels:
+           severity: Warning
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 20% or less Free disk space at /(Root)"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P1:DiskSpaceFreePercentOnRoot_On_Apps
+         expr: node_filesystem_free_percent_root{instance=~"gbt-(is|ums)-01.ec2-east1.glassbeam.com:9100"} <= 10
+         for: 480m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Free disk space at /(Root)"
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+#HostHighCpuUsage for  Platform
+
+       - alert: P2:HostHighCpuUsage_On_Platform
+         expr: node_cpu_load{instance=~"gbt-(h2|ilb|bc2r|lcp|rules)-(01|02).ec2-east1.glassbeam.com:9100"} > 90
+         for: 60m
+         labels:
+           severity: warning
+           custom_alert_interval: devops
+         annotations:
+           summary: Host high CPU load (instance {{ $labels.instance }})
+           description: "CPU load is High\n  VALUE = {{ humanize $value }}\n  LABELS = {{ $labels.instance }}"
+
+
+
+#HostHighCpuUsage for apps
+       - alert: P2:HostHighCpuUsage_On_Apps
+         expr: node_cpu_load{instance=~"gbt-(is|ums)-01.ec2-east1.glassbeam.com:9100"} > 99
+         for: 60m
+         labels:
+           severity: warning
+           custom_alert_interval: devops
+         annotations:
+           summary: Host high CPU load (instance {{ $labels.instance }})
+           description: "CPU load is High\n  VALUE = {{ humanize $value }}\n  LABELS = {{ $labels.instance }}"
+
+       - alert: P1:HostHighLoadRules_platform
+         expr: node_load15{instance=~"gbt-rules-02.ec2-east1.glassbeam.com:9100"} > 8.0*((count without(cpu, mode) (node_cpu_seconds_total{mode="idle",instance=~"gbt-rules-02.ec2-east1.glassbeam.com:9100"})) > 2 )
+         for: 15m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: Host high load on (instance {{ $labels.instance }})
+           description: "15 Minutes LoadAverage is High on {{ $labels.instance }} with Value: {{ humanize $value }}"
+
+
+#HostOutOfMemory for Platform
+       - alert: P1:HostOutOfMemory_On_Platform
+         expr: node_ram_free_percent{instance=~"gbt-(h2|ilb|bc2r|lcp|rules)-(01|02).ec2-east1.glassbeam.com:9100"} <= 5
+         for: 30m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Ram left "
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+
+       - alert: P2:HostOutOfMemory_On_Platform
+         expr: node_ram_free_percent{instance=~"gbt-(h2|ilb|bc2r|lcp|rules)-(01|02).ec2-east1.glassbeam.com:9100"} <= 10
+         for: 30m
+         labels:
+           severity: Warning
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 20% or less Ram left "
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."           
+
+#HostOutOfMemory for Apps
+       - alert: P1:HostOutOfMemory_On_Apps
+         expr: node_ram_free_percent{instance=~"gbt-(is|ums)-01.ec2-east1.glassbeam.com:9100"} <= 5
+         for: 30m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 10% or less Ram left "
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+           
+       - alert: P2:HostOutOfMemory_On_Apps
+         expr: node_ram_free_percent{instance=~"gbt-(is|ums)-01.ec2-east1.glassbeam.com:9100"} <= 6 > 5
+         for: 30m
+         labels:
+           severity: Warning
+           custom_alert_interval: devops
+         annotations:
+           summary: "Instance [{{ $labels.instance }}] has 20% or less Ram left "
+           description: "[{{ $labels.instance }}] has only `{{ humanize $value }}%` or less free."
+#For 2 cpu nodes Platform
+       - alert: P1:HostHighLoad_On_Platform_2CPU
+         expr: node_load15{instance=~"gbt-(h2|ilb|lcp|)-(01|02).ec2-east1.glassbeam.com:9100"} > 2.0*((count without(cpu, mode) (node_cpu_seconds_total{mode="idle",instance=~"gbt-(h2|ilb|lcp|)-(01|02).ec2-east1.glassbeam.com:9100"})) > 2 )
+         for: 15m
+         labels:
+           severity: Critical
+           custom_alert_interval: platform 
+         annotations:
+           summary: Host high load on (instance {{ $labels.instance }})
+           description: "15 Minutes LoadAverage is High on {{ $labels.instance }} with Value: {{ humanize $value }}"
+           
+#For 4 cpu nodes Platform
+       - alert: P1:HostHighLoad_On_Platform_4CPU
+         expr: node_load15{instance=~"gbt-(bc2r|rules)-(01|02).ec2-east1.glassbeam.com:9100"} > 4.0*((count without(cpu, mode) (node_cpu_seconds_total{mode="idle",instance=~"gbt-(bc2r|rules)-(01|02).ec2-east1.glassbeam.com:9100"})) > 2 )
+         for: 15m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: Host high load on (instance {{ $labels.instance }})
+           description: "15 Minutes LoadAverage is High on {{ $labels.instance }} with Value: {{ humanize $value }}"
+           
+           
+           
+#For 2 cpu nodes apps
+       - alert: P1:HostHighLoad
+         expr: node_load15{instance=~"gbt-ums-01.ec2-east1.glassbeam.com:9100"} > 2.0*((count without(cpu, mode) (node_cpu_seconds_total{mode="idle",instance=~"gbt-ums-01.ec2-east1.glassbeam.com:9100"})) > 2 )
+         for: 15m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: Host high load on (instance {{ $labels.instance }})
+           description: "15 Minutes LoadAverage is High on {{ $labels.instance }} with Value: {{ humanize $value }}"
+       - alert: P1:HostHighLoad_On_App_4CPU
+         expr: node_load15{instance=~"gbt-is-01.ec2-east1.glassbeam.com:9100"} > 4.0*((count without(cpu, mode) (node_cpu_seconds_total{mode="idle",instance=~"gbt-is-01.ec2-east1.glassbeam.com:9100"})) > 2 )
+         for: 15m
+         labels:
+           severity: Critical
+           custom_alert_interval: devops
+         annotations:
+           summary: Host high load on (instance {{ $labels.instance }})
+           description: "15 Minutes LoadAverage is High on {{ $labels.instance }} with Value: {{ humanize $value }}"

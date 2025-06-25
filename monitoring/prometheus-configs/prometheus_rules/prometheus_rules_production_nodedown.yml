@@ -1,0 +1,416 @@
+groups:
+  - name: Production_Process_Rules
+    rules:
+      - alert: P1:InfoServer_Process_Check
+        expr: up{exported_job=~"infoserver",exported_instance=~"gbp-is-(01|02).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: apps
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:InfoServer_Process_Check
+        expr: up{exported_job=~"infoserver",exported_instance=~"gbp-(sbxbe|sbxfe)-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: apps
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+
+      - alert: P1:Apache_Process_Check
+        expr: up{exported_job=~"apache",exported_instance=~"gbp-is-(01|02).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: apps
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:UMS_Process_Check
+        expr: up{exported_job=~"ums",exported_instance=~"gbp-ums-(01|02).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: apps
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:Solr_Process_Check
+        expr: up{exported_job=~"solr",exported_instance=~"gbp-solr-(01|02|03|04).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:Kafka_Process_Check
+        expr: up{exported_job=~"kafka",exported_instance=~"gbp-kafka-(01|02|03).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:SBX_Kafka_Process_Check
+        expr: up{exported_job=~"kafka",exported_instance=~"gbp-(sbxbe|sbxfe)-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:Kafka_ZooKeeper_Process_Check
+        expr: up{exported_job=~"kafka_zk",exported_instance=~"gbp-kafka-(01|02|03).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:SBX_Kafka_ZooKeeper_Process_Check
+        expr: up{exported_job=~"kafka_zk",exported_instance=~"gbp-(sbxbe|sbxfe)-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:Solr_ZooKeeper_Process_Check
+        expr: up{exported_job=~"solr_zk",exported_instance=~"gbp-solr-(01|02|03|04).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:Cassandra_Process_Check
+        expr: up{exported_job=~"cassandra",exported_instance=~"gbp-cass-(01|02|03|04|05|06).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:SBX_Cassandra_Process_Check
+        expr: up{exported_job=~"cassandra",exported_instance=~"gbp-(sbxbe|sbxfe)-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:Vertica_Process_Check
+        expr: up{exported_job=~"vertica",exported_instance=~"gbp-(vert|vertops)-(01|02|03|04|05|06|07|08|09|10|11|12).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:LCP_Process_Check
+        #expr: up{exported_job=~"lcp",exported_instance=~"gbp-lcp-(07|21|23).ec2-east1.glassbeam.com"} == 0
+        expr: up{exported_job=~"lcp",exported_instance=~"gbp-lcp-(07|21|23).ec2-east1.glassbeam.com"}  == 0 
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:LCPBatchRules_Process_Check
+        expr: up{exported_job=~"lcprules",exported_instance=~"gbp-(sbxbe|sbxfe)-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:LCP_AE_Process_Check
+        expr: up{exported_job=~"lcpae",exported_instance=~"gbp-dae-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:ML_AE_Process_Check
+        expr: up{exported_job=~"mlae",exported_instance=~"gbp-dae-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:ML_MGR_Process_Check
+        expr: up{exported_job=~"mlmgr",exported_instance=~"gbp-mls-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:ML_MDLSRV_Process_Check
+        expr: up{exported_job=~"mlmdlsrv",exported_instance=~"gbp-mls-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:FP_GE_Process_Check
+        expr: up{exported_job=~"fpge",exported_instance=~"gbp-mls-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:ILB_Process_Check
+        expr: up{exported_job=~"ilb",exported_instance=~"gbp-upl-(01|02).ec2-east1.glassbeam.com"} > 300
+          #Change it to 300 Seconds from 120 due tohigh load
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:SeenID_Process_Check
+        expr: up {exported_job=~"seenid",exported_instance=~"gbp-(bc2r|upl)-(03|02).ec2-east1.glassbeam.com"} == 0 
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:BC2R_Process_Check
+        expr: up{exported_job=~"bc2r",exported_instance=~"gbp-(dbc2r|bc2r|c2r)-(03|06|01).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:C2S_Process_Check
+        expr: up{exported_job=~"c2s",exported_instance=~"gbp-c2r-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P2:SchemaManager_Process_Check
+        expr: up{exported_job=~"sm",exported_instance=~"gbp-dh2-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P2:SBX_SchemaManager_Process_Check
+        expr: up{exported_job=~"sm",exported_instance=~"gbp-sbxbe-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:RulesManager_Process_Check
+        expr: up{exported_job=~"rm",exported_instance=~"gbp-(dh2|h2)-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:FileRules_Process_Check
+        expr: up{exported_job=~"fr",exported_instance=~"gbp-(drules|rules)-(01|02|03|04).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:BundleRules_Process_Check
+        expr: up{exported_job=~"br",exported_instance=~"gbp-(drules|rules)-(01|02).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:TableRules_Process_Check
+        expr: up{exported_job=~"tr",exported_instance=~"gbp-(drules|rules)-(01|02).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:H2Server_Process_Check
+        expr: up{exported_job=~"h2",exported_instance=~"gbp-(h2|sbxbe)-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P2:NodeExporter_Process_Check
+        expr: up{instance=~"gbp-.*-.*:9100"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: devops
+        annotations:
+          summary: "ALERT - [{{ $labels.instance }}] / [ {{ $labels.job }} ]:CRITICAL"
+          description: "The NodeExporter Process is down"
+
+      - alert: P2:CassandraJMXExporter_Process_Check
+        expr: up{exported_job="cassexporter",exported_instance=~"gbp-cass-0(1|2|3|4|5).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "The CassandraJMXExporter Process is down"
+
+      - alert: P1:AlertManager_Process_Check
+        expr: up{instance=~"(gbp|gbt)-monitor-.*:9093"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - AlertManager_Process_Check:CRITICAL"
+          description: "The AlertManager Process is down"
+
+      - alert: P2:SparkWorker_Process_Check
+        expr: up{exported_job=~"sparkworker",exported_instance=~"gbp-vert-0(1|2|3).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - SparkWorker_Process_Check:CRITICAL"
+          description: "The SparkWorker Process is down on {{ $labels.exported_instance }}"
+
+      - alert: P1:SparkMaster_Process_Check
+        expr: up{exported_job=~"sparkmaster",exported_instance=~"gbp-vert-01.ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - SparkMaster_Process_Check:CRITICAL"
+          description: "The SparkMaster Process is down on {{ $labels.exported_instance }}"
+
+      - alert: P1:SSHD_Process_Check
+        expr: up{exported_job=~"sshd",exported_instance=~"gbp-.*"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - SSHD_Process_Check:CRITICAL"
+          description: "The SSHD_Process_Check is down on {{ $labels.exported_instance }}"
+
+      - alert: P1:Sendmail_Process_Check
+        expr: up{exported_job=~"sendmail",exported_instance=~"gbp-(collector|upl|is|ums)-.*"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - Sendmail_Process_Check:CRITICAL"
+          description: "The Sendmail_Process_Check is down on {{ $labels.exported_instance }}"
+
+      - alert: P1:SSHD443_Process_Check
+        expr: up{exported_job=~"ssh443",exported_instance=~"gbp-collector-.*"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - SSHD443_Process_Check:CRITICAL"
+          description: "The SSHD443_Process_Check is down on {{ $labels.exported_instance }}"
+
+      - alert: P1:SSHD4224_Process_Check
+        expr: up{exported_job=~"ssh4224",exported_instance=~"gbp-collector-.*"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: dlmonitoring
+        annotations:
+          summary: "ALERT - SSHD4224_Process_Check:CRITICAL"
+          description: "The SSHD4224_Process_Check is down on {{ $labels.exported_instance }}"
+
+            #Recently added rule
+      - alert: P1:F2V_Process_Check
+        expr: up{exported_job=~"f2v",exported_instance=~"gbp-(dbc2r|bc2r|c2r)-(03|06|01).ec2-east1.glassbeam.com"} == 0
+        for: 2m
+        labels:
+          severity: Critical
+          custom_alert_interval: platform
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"                        

@@ -1,0 +1,45 @@
+groups:
+  - name: Production_Canon_Process_Rules_ML
+    rules:
+      - alert: P1:Spark_Master_Process_Check
+        expr: node_systemd_unit_state{instance="canon-cass-01.ec2-east1.glassbeam.com:9100",name="spark-master-init.service",state="active",type="forking"} == 0
+        for: 60m
+        labels:
+          severity: Critical
+          custom_alert_interval: mlteam
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:Spark_Worker_Process_Check
+        expr: node_systemd_unit_state{instance=~"canon-cass-(01|02|03|04|05).ec2-east1.glassbeam.com:9100",name="spark-worker-init.service",state="active",type="forking"}  == 0
+        for: 60m
+        labels:
+          severity: Critical
+          custom_alert_interval: mlteam
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+      - alert: P1:HDFS_Data_Node_Process_Check
+        expr: node_systemd_unit_state{instance=~"(canon-cass-(01|02|03|04|05)|canon-ui-02).ec2-east1.glassbeam.com:9100",name="hdfs-datanode-init.service",state="active",type="forking"} == 0
+        for: 60m
+        labels:
+          severity: Critical
+          custom_alert_interval: mlteam
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+
+      - alert: P1:HDFS_Name_Node_Process_Check
+        expr: node_systemd_unit_state{instance=~"canon-ui-02.ec2-east1.glassbeam.com:9100",name="hdfs-datanode-init.service",state="active",type="forking"} == 0
+        for: 60m
+        labels:
+          severity: Critical
+          custom_alert_interval: mlteam
+        annotations:
+          summary: "ALERT - [{{ $labels.exported_instance }}] / [ {{ $labels.exported_job }} ]:CRITICAL"
+          description: "[ {{ $labels.exported_job }} ] Process is down"
+
+
