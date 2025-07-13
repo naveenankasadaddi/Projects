@@ -1,0 +1,12 @@
+---
+- name: This Ansible playbook will install the script to monitor a specifi file on a remote server
+  hosts: gbt-ilb-01.ec2-east1.glassbeam.com
+  become: true
+  become_user: gbt
+  tasks:
+    - name: This task will copy the dir from bastion server to required remote machine under /tmp
+      ansible.builtin.copy:
+        src: /home/gbt/NaveenFiles/nagios_files/check_file_change.bash
+        dest: /tmp
+        owner: gbt
+        group: gbt

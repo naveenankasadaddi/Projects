@@ -1,0 +1,1 @@
+eksctl create cluster --name hub-cluster --region us-west-1
