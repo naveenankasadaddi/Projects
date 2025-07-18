@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: express-app
-        image: naveen333a/express-app:v1
+        image: naveen333a/express-app:V2025.07.15
         ports:
         - containerPort: 8080
