@@ -14,8 +14,15 @@ spec:
       labels:
         app: express-app
     spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: express-app
       containers:
       - name: express-app
-        image: naveen333a/express-app:V2025.07.15
+        image: naveen333a/express-app:v1
         ports:
         - containerPort: 8080
