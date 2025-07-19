@@ -28,8 +28,11 @@ The pipeline automates:
 
 # Assumptions:
 1.EKS/kubernetes/Kind cluster is healthy and ready to deploy with the necessary permissions.
+
 2.Please install the argocd for Continuous deployment process
+
 3.Make sure to install Argocd image updater in the same cluster
+
 4.Just to keep the project structure easy I have kept the Dockerfile and docker-compose.yml in the code repository as well as th pipeline repository.
 
 # **How to Run Locally**
