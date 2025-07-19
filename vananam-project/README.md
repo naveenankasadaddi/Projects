@@ -17,8 +17,8 @@ The pipeline automates:
 - **Node.js & Express** – Backend application
 - **Docker** – Containerization
 - **CI/CD Tool** – *Jenkins*
-- **Container Registry** – ECR
-- **Kubernetes / Docker Compose** – EKS
+- **Container Registry** – Docker Hub
+- **Kubernetes / Docker Compose** – Kind cluster
 - **Docker-compose** – for local setup 
 - **Git/Github** – To store the code
 - **Argocd,Argocd image updater** – CD tool
@@ -27,18 +27,31 @@ The pipeline automates:
   Make sure to install the above mentioned tools/applications.The installation guide is present in **Installation** directory.
 
 # Assumptions:
-1.EKS/kubernetes cluster is healthy and ready to deploy with the necessary permissions.
+1.EKS/kubernetes/Kind cluster is healthy and ready to deploy with the necessary permissions.
 2.Please install the argocd for Continuous deployment process
 3.Make sure to install Argocd image updater in the same cluster
 4.Just to keep the project structure easy I have kept the Dockerfile and docker-compose.yml in the code repository as well as th pipeline repository.
 
 # **How to Run Locally**
 ## **Docker-compose**
+- Pull the express repo and use 
+
 - Used Docker Compose for local testing to easily manage and run multi-container setups in a reproducible environment.
 
 - Simplified the development workflow by isolating dependencies and services through containerization.
 
 - Enabled quick iteration and testing of application code without manual environment configuration.
+
+```
+Commands:
+
+git clone https://github.com/naveenankasadaddi/express.git
+cd examples/hello-world
+docker-compose up
+
+```
+# Note:
+- Just to make the running process smooth I have kept Dockerfile and compose file in both source code repo and manisfest repo.
 
 # **Working Principle:**
 This Jenkins pipeline implements a complete CI/CD process for a Node.js (Express.js) application integrated with Docker and GitOps. The pipeline is automatically triggered by GitHub webhooks on every push to the master branch. It starts by cloning the source code from GitHub and installing project dependencies using npm install. Although Jest is installed for testing, actual test execution is not performed in the current setup. The pipeline then performs static code analysis using SonarQube and installs ESLint for linting, though the lint execution is commented out. After code quality checks, it builds a Docker image, tags it with the current date, and performs a vulnerability scan using Trivy to detect CRITICAL or HIGH severity issues before pushing the image to Docker Hub. Following the image build, the pipeline updates the Kubernetes deployment manifest in an operations repository by replacing the placeholder image tag with the new version. This enables a GitOps workflow where Argo CD can automatically pick up the changes and deploy the new image to the Kubernetes cluster. Finally, the pipeline sends an email notification with the build status, job name, and build URL to notify the developer of the outcome.
