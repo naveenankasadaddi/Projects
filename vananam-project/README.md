@@ -246,11 +246,20 @@ npm install
 node index.js
 ```
 
+
 # Continous Deploymentimplementation:
 - For continuous deployment i'am using Arrgocd.
 - Once the Argoc is Up and running  in the kubernetes cluster,deploy the express kustomize in the Argo cd by providing the cenecessary informations for the Argocd.
 - I'am deploying the application in the kind cluster in a nodeport to access the UI.
 - You can you Eks cluster and  and change the service to LOadbalancer mode if you want to deploy in cloud environments.For your refferenc I have attached the how to use AWS ALB you can reffer.
+
+
+Note:
+- Please make sure to configure the kubernetes cluster.
+- Install the Argocd in the same cluster using the documentationin this repo.
+- Please follow the following steps to deploy the manifests in kubernetes cluster using Argocd
+
+
 
 ```
   Steps to deploy kustomize/helm in  Argocd
@@ -262,9 +271,3 @@ Application name,Project name,Sync Policy as Automatic,Prune Propagation Policy:
 ```
 
 ![alt text](image.png)
-
-```
-Note:
-- Please make sure to configure the kubernetes cluster.
-- Install the Argocd in the same cluster using the documentationin this repo.
-```
