@@ -1,0 +1,185 @@
+pipeline {
+    agent any
+    triggers {
+        githubPush() 
+    }
+    options {
+    skipDefaultCheckout()
+    timestamps()
+    }
+    environment {
+        DOCKER_REGISTRY = "naveen333a/express-app"
+        IMAGE_NAME = "hello-app"
+        IMAGE_VERSION = sh(script: 'date +%Y.%m.%d', returnStdout: true).trim()
+        //IMAGE_VERSION = "2025.7.8"
+        //IMAGE_TAG = "${DOCKER_USER}/${IMAGE_NAME}:V${IMAGE_VERSION}"
+        CONTAINER_NAME=  "${DOCKER_REGISTRY}:V${IMAGE_VERSION}"
+        REGISTRY_CREDENTIALS = credentials('docker-cred')
+    }
+    stages {
+        stage('clone-source-code') {
+            steps {
+                git url:'https://github.com/naveenankasadaddi/express.git',branch : 'master'
+            }
+        }
+        stage('Install-dependiences'){
+            steps{
+                sh '''
+                    cd examples/hello-world
+                    npm install
+                '''
+            }
+        }
+        stage('Test on PR') {
+            when {
+                changeRequest()
+            }
+            steps {
+                sh './run_tests.sh'
+                junit 'reports/**/*.xml'
+            }
+        }
+        stage('Static Code Analysis') {
+            environment {
+                SONAR_URL = "http://localhost:9000"
+            }
+            steps {
+                withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+                sh '''
+                    npm install -g sonar-scanner
+                    sonar-scanner -Dsonar.projectKey=express-app -Dsonar.sources=. -Dsonar.exclusions=**/node_modules/** -Dsonar.host.url=${SONAR_URL} -Dsonar.login=$SONAR_AUTH_TOKEN
+                '''
+                }
+            }
+        }
+
+        stage('Lint Code') {
+            steps {
+                sh '''
+                    cd examples/hello-world
+                    npm install --save-dev eslint
+                    //npm run lint || true
+                '''
+            }
+        }
+    stage('Build Docker Image') {
+      steps {
+        script {
+            withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                sh '''
+                    cd examples/hello-world
+                    echo "Building Docker image $CONTAINER_NAME"
+                    docker build -t "$CONTAINER_NAME" .
+
+
+
+                    echo "Logging into Docker Hub"
+                    docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+
+                    echo "Pushing image to Docker Hub"
+                    docker push $CONTAINER_NAME
+                '''
+            }
+        }
+    }
+    stage('Vulnerability Scan'){
+        when{
+            branch 'main'
+        }
+        steps{
+            sh '''
+                echo "Running Trivy vulnerability scan on $CONTAINER_NAME"
+                trivy image --severity CRITICAL,HIGH --exit-code 1 "$CONTAINER_NAME"
+
+            '''
+        }
+    }
+    stage('Docker push'){
+        steps {
+            script {
+                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                    echo "Logging into Docker Hub"
+                    docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+
+                    echo "Pushing image to Docker Hub"
+                    docker push $CONTAINER_NAME
+                '''
+            }
+        }
+
+    }
+    stage('Update manifests file in stage repo') {
+        environment {
+            GIT_REPO_NAME = "Stage-manifests"
+            GIT_USER_NAME = "naveenankasadaddi"
+        }
+        steps {
+            withCredentials([string(credentialsId: 'github-stage', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                    git config user.email "<email>"
+                    git config user.name "<username>"
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    sed -i "s/replaceImageTag/${IMAGE_VERSION}/g" vananam-project/k8s-manifests/deployment.yml
+                    git add vananam-project/k8s-manifests/deployment.yml
+                    git commit -m "Update deployment image to version ${IMAGE_VERSION}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:maain
+                '''
+            }
+        }
+    }
+    stage('Manual Approval for Prod') {
+      steps {
+        input message: 'Deploy to production?', ok: 'Deploy'
+      }
+    }
+
+    stage('Update manifests file in Prod repo') {
+        environment {
+            GIT_REPO_NAME = "Prod-manifests"
+            GIT_USER_NAME = "naveenankasadaddi"
+        }
+        steps {
+            withCredentials([string(credentialsId: 'github-prod', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                    git config user.email "<email>"
+                    git config user.name "<username>"
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    sed -i "s/replaceImageTag/${IMAGE_VERSION}/g" vananam-project/k8s-manifests/deployment.yml
+                    git add vananam-project/k8s-manifests/deployment.yml
+                    git commit -m "Update deployment image to version ${IMAGE_VERSION}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:maain
+                '''
+            }
+        }
+    }
+
+}
+  }
+    post {
+        failure {
+            emailext (
+                subject: "Build failure: ${env.JOB_NAME} - #${env.BUILD_NUMBER}",
+                body: """
+                Job Name: ${env.JOB_NAME}
+                Build Number: ${env.BUILD_NUMBER}
+                Build Status: ${currentBuild.currentResult}
+                Build URL: ${env.BUILD_URL}
+                """,
+                to: 'naveenank2001@gmail.com'
+            )
+        }
+        success {
+            emailext (
+                subject: "Build success: ${env.JOB_NAME} - #${env.BUILD_NUMBER}",
+                body: """
+                Job Name: ${env.JOB_NAME}
+                Build Number: ${env.BUILD_NUMBER}
+                Build Status: ${currentBuild.currentResult}
+                Build URL: ${env.BUILD_URL}
+                """,
+                to: 'naveenank2001@gmail.com'
+            )
+        }
+    }
+}
