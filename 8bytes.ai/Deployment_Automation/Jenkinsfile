@@ -58,7 +58,7 @@ pipeline {
                 sh '''
                     cd examples/hello-world
                     npm install --save-dev eslint
-                    //npm run lint || true
+                    npm run lint || true
                 '''
             }
         }
@@ -123,12 +123,12 @@ pipeline {
                     sed -i "s/replaceImageTag/${IMAGE_VERSION}/g" vananam-project/k8s-manifests/deployment.yml
                     git add vananam-project/k8s-manifests/deployment.yml
                     git commit -m "Update deployment image to version ${IMAGE_VERSION}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:maain
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
                 '''
             }
         }
     }
-    stage('Manual Approval for Prod') {
+    stage('Manual Approval for Prod repo') {
       steps {
         input message: 'Deploy to production?', ok: 'Deploy'
       }
@@ -148,7 +148,7 @@ pipeline {
                     sed -i "s/replaceImageTag/${IMAGE_VERSION}/g" vananam-project/k8s-manifests/deployment.yml
                     git add vananam-project/k8s-manifests/deployment.yml
                     git commit -m "Update deployment image to version ${IMAGE_VERSION}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:maain
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
                 '''
             }
         }

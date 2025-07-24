@@ -1,0 +1,2770 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "limit": 100,
+        "name": "Annotations & Alerts",
+        "showIn": 0,
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 6,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 76,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 77,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "(node_memory_MemTotal_bytes{instance=\"localhost:9100\"} - node_memory_MemFree_bytes{instance=\"localhost:9100\"}) / node_memory_MemTotal_bytes{instance=\"localhost:9100\"} * 100",
+              "instant": false,
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Memory consumption including Cached memory",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 10
+          },
+          "id": 78,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "((node_memory_MemTotal_bytes{instance=\"localhost:9100\"} - (node_memory_MemFree_bytes{instance=\"localhost:9100\"} + node_memory_Buffers_bytes{instance=\"localhost:9100\"} + node_memory_Cached_bytes{instance=\"localhost:9100\"})) / node_memory_MemTotal_bytes{instance=\"localhost:9100\"}) * 100",
+              "instant": false,
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Memory consumption excluding Cached memory",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Memory",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 20,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "Health Probe of the Prometheus keepalive Status",
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                {
+                  "options": {
+                    "1": {
+                      "index": 0,
+                      "text": "UP"
+                    },
+                    "NAN": {
+                      "index": 1,
+                      "text": "DOWN"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "percentage",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "orange",
+                    "value": 70
+                  },
+                  {
+                    "color": "red",
+                    "value": 85
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 2
+          },
+          "id": 4,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "sizing": "auto"
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "up{instance=\"localhost:9100\"}",
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "gbt-cass-11",
+              "refId": "A"
+            }
+          ],
+          "title": "Prometheus KeepAlive Status",
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 1,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red"
+                  },
+                  {
+                    "color": "orange",
+                    "value": 300
+                  },
+                  {
+                    "color": "green",
+                    "value": 3600
+                  }
+                ]
+              },
+              "unit": "s"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 2
+          },
+          "id": 79,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "node_time_seconds{instance=\"localhost:9100\"} - node_boot_time_seconds{instance=\"localhost:9100\"}",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01",
+              "refId": "D"
+            }
+          ],
+          "title": "System Uptime",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 0,
+            "y": 10
+          },
+          "id": 80,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "text": {},
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "count(node_cpu_seconds_total{mode=\"user\", instance=\"localhost:9100\"})",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01",
+              "refId": "D"
+            }
+          ],
+          "title": "Virtual CPUs",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decgbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 12,
+            "y": 10
+          },
+          "id": 81,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "round(node_memory_MemTotal_bytes{instance=\"localhost:9100\"} /1024/1024/1024,1)",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01",
+              "refId": "D"
+            }
+          ],
+          "title": "Total Memory(RAM)",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 0,
+            "y": 16
+          },
+          "id": 82,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "round(node_filesystem_size_bytes{instance=\"localhost:9100\",mountpoint=\"/\"} /1024/1024/1024,1)",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01",
+              "refId": "D"
+            }
+          ],
+          "title": "Root volume(/)",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 100
+                  }
+                ]
+              },
+              "unit": "decgbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 12,
+            "y": 16
+          },
+          "id": 83,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "round(node_filesystem_size_bytes{instance=\"localhost:9100\",mountpoint=\"/ebs\"} /1024/1024/1024,1)",
+              "hide": false,
+              "instant": false,
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01",
+              "refId": "D"
+            }
+          ],
+          "title": "ebs volume(/ebs)",
+          "transparent": true,
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "IO Wait",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "% of CPU wait",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "fieldMinMax": true,
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 22
+          },
+          "id": 8,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "avg(irate(node_cpu_seconds_total{instance=\"localhost:9100\",mode=\"iowait\"}[5m])) * 100",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "IOWait ",
+          "transparent": true,
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 2,
+                "gradientMode": "hue",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 34
+          },
+          "id": 70,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "width": 340
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"user\"}[5m]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"gbt-cass-11:9100\",mode =\"User\"}[5m]),1)) ) ),1) * 100",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01",
+              "refId": "G"
+            }
+          ],
+          "title": "CPU Load-user",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 46
+          },
+          "id": 68,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "width": 340
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"iowait\"}[5m]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"iowait\"}[5m]),1)) ) ),1) * 100",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01",
+              "refId": "A"
+            }
+          ],
+          "title": "CPU Load-iowait",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "fieldMinMax": false,
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 59
+          },
+          "id": 69,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true,
+              "width": 340
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"system\"}[5m]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"system\"}[5m]),1)) ) ),1) * 100",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01",
+              "refId": "D"
+            }
+          ],
+          "title": "CPU Load-system",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 72
+          },
+          "id": 6,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"localhost:9100\",mode=\"iowait\"}[5m]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"iowait\"}[5m]),1)) ) ),1) * 100",
+              "hide": false,
+              "legendFormat": "canon-ae-01-{{mode}}",
+              "range": true,
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"system\"}[5m]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"system\"}[5m]),1)) ) ),1) * 100",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01-{{mode}}",
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"user\"}[5m]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"localhost:9100\",mode =\"User\"}[5m]),1)) ) ),1) * 100",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "canon-ae-01-{{mode}}",
+              "refId": "G"
+            }
+          ],
+          "title": "CPU Load",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 1,
+              "fieldMinMax": false,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": [
+              {
+                "__systemRef": "hideSeriesFrom",
+                "matcher": {
+                  "id": "byNames",
+                  "options": {
+                    "mode": "exclude",
+                    "names": [
+                      "canon-ae-01"
+                    ],
+                    "prefix": "All except:",
+                    "readOnly": true
+                  }
+                },
+                "properties": [
+                  {
+                    "id": "custom.hideFrom",
+                    "value": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 85
+          },
+          "id": 16,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "node_load5{instance=~\"localhost:9100\"}",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "5 min Load Average",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 1,
+              "fieldMinMax": false,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 97
+          },
+          "id": 84,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "node_load15{instance=~\"localhost:9100\"}",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "15 min Load Average",
+          "type": "timeseries"
+        }
+      ],
+      "title": "System Stats",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 75,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": true,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 40,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decmbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 12,
+            "x": 0,
+            "y": 3
+          },
+          "id": 71,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "irate(node_disk_read_bytes_total{device=~\"xvda\",instance=\"localhost:9100\"}[5m])/1024/1024  ",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Disk Reads-root",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": true,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 40,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decmbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 12,
+            "x": 12,
+            "y": 3
+          },
+          "id": 10,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "irate(node_disk_read_bytes_total{device=~\"xvdb|xvdf\",instance=\"localhost:9100\"}[5m])/1024/1024  ",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Disk Reads-ebs",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "Depicts LCP disk free space for / ebs volume",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepAfter",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decmbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 12,
+            "x": 0,
+            "y": 15
+          },
+          "id": 73,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "100 - ((node_filesystem_avail_bytes{mountpoint=\"/\",instance=\"localhost:9100\" } * 100) /  node_filesystem_size_bytes{mountpoint=\"/\",instance=\"localhost:9100\" })",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Disk Usage-root",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "description": "Depicts LCP disk free space for / ebs volume",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "stepAfter",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 4,
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decmbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 12,
+            "x": 12,
+            "y": 15
+          },
+          "id": 14,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "100 - ((node_filesystem_avail_bytes{mountpoint=\"/ebs\",instance=\"localhost:9100\" } * 100) /  node_filesystem_size_bytes{mountpoint=\"/ebs\",instance=\"localhost:9100\" })",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Disk Usage-ebs",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decmbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 12,
+            "x": 0,
+            "y": 28
+          },
+          "id": 12,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "irate(node_disk_written_bytes_total{device=~\"xvda\",instance=\"localhost:9100\"}[5m])/1024/1024  ",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Disk Writes-root",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 3,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decmbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 12,
+            "x": 12,
+            "y": 28
+          },
+          "id": 72,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "multi",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "irate(node_disk_written_bytes_total{device=~\"xvdb|xvdf\",instance=\"localhost:9100\"}[5m])/1024/1024  ",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Disk Writes-ebs",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Volumes",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 22,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 4
+          },
+          "id": 24,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "sizing": "auto"
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max(sum by (instance) (avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"localhost:9100\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"localhost:9100\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100,100)",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "$cpu-total",
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 16
+          },
+          "id": 46,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=~\"localhost:9100\",cpu=~\"$cpu\",mode=\"system\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=~\"localhost:9100\",cpu=~\"$cpu\",mode=\"system\"}[$__interval]),1)) )) *100,100)",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "$cpu - system",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [
+                {
+                  "id": 0,
+                  "op": "=",
+                  "text": "N/A",
+                  "type": 1,
+                  "value": "null"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 27
+          },
+          "id": 52,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max(sum by (instance) (avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"localhost:9100\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"localhost:9100\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[5m]),1)) )) *100,100)",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "$cpu - other",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 38
+          },
+          "id": 26,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=~\"localhost:9100\",cpu=\"$cpu\",mode=\"user\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=~\"localhost:9100\",cpu=~\"$cpu\",mode=\"user\"}[$__interval]),1)) )) *100,100)",
+              "hide": false,
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "$cpu-user",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisGridShow": true,
+                "axisLabel": "",
+                "axisPlacement": "left",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 14,
+            "w": 24,
+            "x": 0,
+            "y": 51
+          },
+          "id": 48,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=~\"localhost:9100\",cpu=~\"$cpu\",mode=\"iowait\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=~\"localhost:9100\",cpu=~\"$cpu\",mode=\"iowait\"}[$__interval]),1)) )) *100,100)",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "$cpu - iowait",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ddmjp07y3ljb4f"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 14,
+            "w": 24,
+            "x": 0,
+            "y": 65
+          },
+          "id": 50,
+          "maxDataPoints": 100,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "10.4.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "ddmjp07y3ljb4f"
+              },
+              "editorMode": "code",
+              "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=~\"localhost:9100\",cpu=~\"$cpu\",mode=\"steal\"}[$__interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=~\"localhost:9100\",cpu=~\"$cpu\",mode=\"steal\"}[$__interval]),1)) )) *100,100)",
+              "legendFormat": "canon-ae-01",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "$cpu - steel",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Per CPU Information",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 40,
+  "tags": [
+    "canon",
+    "ae"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "0",
+          "value": "0"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "ddmjp07y3ljb4f"
+        },
+        "definition": "label_values(node_cpu_seconds_total{instance=\"canon-ae-01.ec2-east1.glassbeam.com.ec2-east1.glassbeam.com:9100\"},cpu)",
+        "hide": 2,
+        "includeAll": false,
+        "label": "CPU",
+        "name": "cpu",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(node_cpu_seconds_total{instance=\"localhost:9100\"},cpu)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "localhost",
+  "uid": "fdhm0js4ndkhsf",
+  "version": 1,
+  "weekStart": ""
+}

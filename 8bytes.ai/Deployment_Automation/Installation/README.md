@@ -63,6 +63,8 @@ sudo usermod -aG docker jenkins
   sudo apt-get update
   sudo apt-get install -y jenkins
 
+  Configure the smtp server
+
 ```
 ### Install Git & Setup GitHub
 ```
